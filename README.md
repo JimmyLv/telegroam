@@ -14,7 +14,7 @@
 - Latest Update ID::
 
 5. Make a block with the text {{[[roam/js]]}}.
-6. Nested in that block, make a code block and paste the full contents of [telegroam.js](./src/telegroam.js) inside.
+6. Nested in that block, make a JavaScript code block and paste the full contents of [telegroam.js](./src/telegroam.js) inside.
 7. Refresh the Roam Research website.
 
 ![](docs/images/settings.png)
