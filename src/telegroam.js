@@ -73,15 +73,90 @@
     }
   }
 
+  async function getBlockContentByUID(
+    uid,
+    withChildren = false,
+    withParents = false
+  ) {
+    try {
+      let q = `[:find (pull ?page
+                     [:node/title :block/string :block/uid :block/heading :block/props 
+                      :entity/attrs :block/open :block/text-align :children/view-type
+                      :block/order
+                      ${withChildren ? "{:block/children ...}" : ""}
+                      ${withParents ? "{:block/parents ...}" : ""}
+                     ])
+                  :where [?page :block/uid "${uid}"]  ]`;
+      var results = await window.roamAlphaAPI.q(q);
+      if (results.length === 0) {
+        return null;
+      }
+      return results[0][0].string;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function getRandomBlock() {
+    let results = await window.roamAlphaAPI.q(
+      `[:find [(rand 1 ?blocks)] :where [?e :block/uid ?blocks]]`
+    );
+    return results[0][0];
+  }
+
+  async function getBlocksReferringToThisPage(title) {
+    try {
+      return await window.roamAlphaAPI.q(`
+            [:find (pull ?refs [:block/string :block/uid {:block/children ...}])
+                :where [?refs :block/refs ?title][?title :node/title "${title}"]]`);
+    } catch (e) {
+      return "";
+    }
+  }
+
+  async function getRandomBlockMentioningPage(pageTitle) {
+    const page_title =
+      pageTitle.startsWith("[[") && pageTitle.endsWith("]]")
+        ? pageTitle.slice(2, -2)
+        : pageTitle;
+
+    var results = await getBlocksReferringToThisPage(page_title);
+    if (results.length === 0) {
+      return "";
+    }
+
+    var random_result = results[Math.floor(Math.random() * results.length)];
+    return random_result[0].uid;
+  }
+
+  async function getRandomBlockFromPage(pageTitle) {
+    const page_title =
+      pageTitle.startsWith("[[") && pageTitle.endsWith("]]")
+        ? pageTitle.slice(2, -2)
+        : pageTitle;
+    var rule =
+      "[[(ancestor ?b ?a)[?a :block/children ?b]][(ancestor ?b ?a)[?parent :block/children ?b ](ancestor ?parent ?a) ]]";
+
+    var query = `[:find  (pull ?block [:block/uid])
+                                 :in $ ?page_title %
+                                 :where
+                                 [?page :node/title ?page_title]
+                                 (ancestor ?block ?page)]`;
+
+    var results = await window.roamAlphaAPI.q(query, page_title, rule);
+    var random_result = results[Math.floor(Math.random() * results.length)];
+
+    return random_result[0].uid;
+  }
+
   async function updateFromTelegram() {
     let corsProxyUrl = stripTrailingSlash(
       unlinkify(findBotAttribute("Trusted Media Proxy").value)
     );
     let inboxName = findBotAttribute("Inbox Name").value;
     let telegramChatId = findBotAttribute("Chat Id").value;
+    let randomFromPage = findBotAttribute("Serendipity Page").value;
     let api = `https://api.telegram.org/bot${telegramApiKey}`;
-
-    let sendMessageApi = `/sendMessage?chat_id=${telegramChatId}&text=${"Hello World"}`;
 
     let updateId = null;
     let updateIdBlock = findBotAttribute("Latest Update ID");
@@ -134,6 +209,7 @@
     let i = 1;
     for (let result of updateResponse.result) {
       await handleTelegramUpdate(result, i);
+      await sendRandomBlockToTelegram();
       ++i;
     }
 
@@ -187,6 +263,26 @@
         :where [?block :block/uid "${uid}"]
       ]`).length > 0
       );
+    }
+
+    async function sendRandomBlockToTelegram() {
+      if (!telegramChatId) {
+        return;
+      }
+
+      let randomBlockUid;
+      if (!randomFromPage) {
+        randomBlockUid = await getRandomBlock();
+      } else {
+        randomBlockUid = await getRandomBlockMentioningPage(randomFromPage);
+      }
+      const randomBlockContent = await getBlockContentByUID(randomBlockUid);
+      const lastUsedGraph = localStorage.getItem("lastUsedGraph");
+      const refUrl = `https://roamresearch.com/#/app/${lastUsedGraph}/page/${randomBlockUid}`;
+      const text = encodeURIComponent(
+        `${randomBlockContent} <a href="${refUrl}">*</a>`
+      );
+      await GET(`sendMessage?chat_id=${telegramChatId}&text=${text}&parse_mode=HTML`);
     }
 
     async function handleTelegramUpdate(result, i) {
