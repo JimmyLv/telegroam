@@ -4,7 +4,7 @@
 2. Send something to your bot in a private message.
 3. Make a page in your Roam called [[Telegram Bot]].
 4. Paste these nodes somewhere on the [[Telegram Bot]] page:
-
+```md
 - Inbox Name:: [[Inbox]]
 - API Key:: insert key you get from Telegram's bot system
   - {{[[TODO]]}} update the Telegram API key above
@@ -12,8 +12,8 @@
 - Serendipity Page:: [[Z]]
 - Trusted Media Proxy:: https://telegram-cors-proxy.herokuapp.com
 - Latest Update ID::
-
-5. Make a block with the text {{[[roam/js]]}}.
+```
+5. Make a block with the text `{{[[roam/js]]}}`.
 6. Add a nested **CHILD** block `/JavaScript Code Block` with this code...
 ```js
 var existing = document.getElementById("telegroam");
