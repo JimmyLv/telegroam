@@ -277,8 +277,9 @@
         randomBlockUid = await getRandomBlockMentioningPage(randomFromPage);
       }
       const randomBlockContent = await getBlockContentByUID(randomBlockUid);
-      const lastUsedGraph = localStorage.getItem("lastUsedGraph");
-      const refUrl = `https://roamresearch.com/#/app/${lastUsedGraph}/page/${randomBlockUid}`;
+      /*const lastUsedGraph = localStorage.getItem("lastUsedGraph");
+      const refUrl = `https://roamresearch.com/#/app/${lastUsedGraph}/page/${randomBlockUid}`;*/
+      const refUrl = `((${randomBlockUid}}))`
       const text = encodeURIComponent(
         `${randomBlockContent} <a href="${refUrl}">*</a>`
       );
