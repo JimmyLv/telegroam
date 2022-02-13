@@ -14,8 +14,19 @@
 - Latest Update ID::
 
 5. Make a block with the text {{[[roam/js]]}}.
-6. Nested in that block, make a JavaScript code block and paste the full contents of [telegroam.js](./src/telegroam.js) inside.
-7. Refresh the Roam Research website.
+6. Add a nested **CHILD** block `/JavaScript Code Block` with this code...
+```js
+var existing = document.getElementById("telegroam");
+if (!existing) {
+  var extension = document.createElement("script");
+  extension.src = "https://telegroam.vercel.app/src/telegroam.js";
+  extension.id = "telegroam";
+  extension.async = true;
+  extension.type = "text/javascript";
+  document.getElementsByTagName("head")[0].appendChild(extension);
+}
+```
+7. Press the BIG RED button to enable the script and refresh the page.
 
 ![](docs/images/settings.png)
 
