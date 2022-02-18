@@ -1,3 +1,10 @@
+## Feature
+
+When Roam Research receives one message, it automatically returns a previously random note:
+
+![CleanShot 2022-02-18 at 16 14 15@2x](https://user-images.githubusercontent.com/4997466/154644033-276293d5-749c-4279-8b6d-d1f0212e3bd2.png)
+
+
 ## Installation
 
 1. In Telegram, talk to [@BotFather](https://t.me/botfather) to create a new bot and get an API key for it.
