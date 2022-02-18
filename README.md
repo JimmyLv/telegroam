@@ -2,7 +2,7 @@
 
 When Roam Research receives one message, it automatically returns a previously random note:
 
-![CleanShot 2022-02-18 at 16 14 15@2x](https://user-images.githubusercontent.com/4997466/154644033-276293d5-749c-4279-8b6d-d1f0212e3bd2.png)
+![CleanShot 2022-02-18 at 16 14 15@2x](https://user-images.githubusercontent.com/4997466/154659939-d7dffa1b-4c14-465c-923b-ea3c50888e29.png)
 
 
 ## Installation
