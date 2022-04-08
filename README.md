@@ -39,6 +39,12 @@ if (!existing) {
 
 ## Q&A
 
-1. How to get your Telegram chat id? open the Chrome DevTool, you can see
+1. How to get your Telegram chat id? 
+
+option 1: https://t.me/getmyid_bot
+
+> This TG bot will send you your telegram user ID, current chat ID and sender ID or chat ID of forwarded message.
+
+option 2: if you are FE dev, just open the Chrome DevTool, as you can see
 
 ![](docs/images/chat-id.png)
