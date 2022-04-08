@@ -16,7 +16,7 @@ When Roam Research receives one message, it automatically returns a previously r
 - API Key:: insert key you get from Telegram's bot system
   - {{[[TODO]]}} update the Telegram API key above
 - Chat Id::
-- Serendipity Page:: [[Z]]
+- Serendipity Page:: [[TODO]]
 - Trusted Media Proxy:: https://telegram-cors-proxy.herokuapp.com
 - Latest Update ID::
 ```
@@ -50,3 +50,7 @@ option 1: https://t.me/getmyid_bot
 option 2: if you are FE dev, just open the Chrome DevTool, as you can see
 
 ![](docs/images/chat-id.png)
+
+2. How to select the block content that Bot is replying to?
+
+Just change the `[[TODO]]` in `Serendipity Page:: [[TODO]]` to your own tag, such as `[[ZK]]` or `[[Zettel]]`
