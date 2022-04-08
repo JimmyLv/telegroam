@@ -45,6 +45,8 @@ option 1: https://t.me/getmyid_bot
 
 > This TG bot will send you your telegram user ID, current chat ID and sender ID or chat ID of forwarded message.
 
+<img width="433" alt="20220408-Telegram-001263@2x" src="https://user-images.githubusercontent.com/4997466/162418605-6ccf0780-b183-4cda-8b9b-1b71dc4bad82.png">
+
 option 2: if you are FE dev, just open the Chrome DevTool, as you can see
 
 ![](docs/images/chat-id.png)
