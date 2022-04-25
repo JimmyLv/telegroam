@@ -426,7 +426,7 @@
           uid,
           order: maxOrder + i,
           // string: `[[${name}]] at ${hhmm}: ${text}  #telegroam`
-          string: `${text}`,
+          string: `${hhmm} ${text}`,
         });
 
         async function insertFile(fileid, generate) {
