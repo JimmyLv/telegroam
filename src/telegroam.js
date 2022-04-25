@@ -193,7 +193,7 @@
 
     if (inboxUids.length) {
       inboxUid = inboxUids[0];
-    } else {
+    } else if (inboxName){
       inboxUid = roamAlphaAPI.util.generateUID();
 
       // put the inbox at the bottom of the daily note
@@ -202,6 +202,8 @@
         location: { "parent-uid": dailyNoteUid, order },
         block: { uid: inboxUid, string: inboxName },
       });
+    } else {
+      inboxUid = dailyNoteUid;
     }
 
     let maxOrder = findMaxOrder(inboxUid);
