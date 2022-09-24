@@ -1,4 +1,6 @@
+import { uidForToday } from "./helpers/date";
 import { formatMessage, formatTime } from "./helpers/format";
+import { stripTrailingSlash, unlinkify } from "./helpers/url";
 import { findBotAttribute } from "./roam/findBotAttribute";
 
 type Block = {
@@ -15,31 +17,7 @@ function telegroam() {
 
   const debug = isDebug ? console.debug : () => {};
 
-  function uidForToday() {
-    let today = new Date();
-    let yyyy = today.getFullYear();
-    let mm = (today.getMonth() + 1).toString().padStart(2, "0");
-    let dd = today.getDate().toString().padStart(2, "0");
-    return `${mm}-${dd}-${yyyy}`;
-  }
-
-  function stripTrailingSlash(url) {
-    if (url.endsWith("/")) {
-      return url.slice(0, -1);
-    } else {
-      return url;
-    }
-  }
-
   let telegramApiKey = findBotAttribute("API Key").value;
-
-  function unlinkify(s) {
-    if (s.match(/^\[.*?\]\((.*?)\)$/)) {
-      return RegExp.$1;
-    } else {
-      return s;
-    }
-  }
 
   async function getBlockContentByUID(
     uid,
