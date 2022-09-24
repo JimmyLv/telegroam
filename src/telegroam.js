@@ -302,6 +302,7 @@
     }
 
     async function handleTelegramUpdate(result, i) {
+      debug("========msg update result========", result);
       let { message, edited_message, poll } = result;
 
       if (poll) {
