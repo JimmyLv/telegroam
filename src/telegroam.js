@@ -8,25 +8,32 @@
 // so our declarations don't become global properties
 // because that might conflict with other extensions
 (function () {
+  const lastUsedGraph = localStorage.getItem("lastUsedGraph");
+  const isDebug = lastUsedGraph === "Note-Tasking";
+  const debug = isDebug ? console.debug : () => {};
+
   function massage(text) {
     text = text.replace(/\bTODO\b/, "{{[[TODO]]}}");
     return text;
   }
 
-  function findBotAttribute(name) {
+  function findBotAttribute(name, isOptional) {
     const BOT_PAGE_NAME = "Telegram Bot";
 
     let x = roamAlphaAPI.q(`[
-      :find (pull ?block [:block/uid :block/string])
-      :where
-        [?page :node/title "${BOT_PAGE_NAME}"]
-        [?block :block/page ?page]
-        [?block :block/refs ?ref]
-        [?ref :node/title "${name}"]
-        [?block :block/string ?string]
-    ]`);
+:find (pull ?block [:block/uid :block/string])
+:where
+  [?page :node/title "${BOT_PAGE_NAME}"]
+  [?block :block/page ?page]
+  [?block :block/refs ?ref]
+  [?ref :node/title "${name}"]
+  [?block :block/string ?string]
+]`);
 
     if (!x.length) {
+      if (isOptional) {
+        return {};
+      }
       throw new Error(`attribute ${name} missing from [[${BOT_PAGE_NAME}]]`);
     }
 
@@ -80,13 +87,13 @@
   ) {
     try {
       let q = `[:find (pull ?page
-                     [:node/title :block/string :block/uid :block/heading :block/props 
-                      :entity/attrs :block/open :block/text-align :children/view-type
-                      :block/order
-                      ${withChildren ? "{:block/children ...}" : ""}
-                      ${withParents ? "{:block/parents ...}" : ""}
-                     ])
-                  :where [?page :block/uid "${uid}"]  ]`;
+               [:node/title :block/string :block/uid :block/heading :block/props 
+                :entity/attrs :block/open :block/text-align :children/view-type
+                :block/order
+                ${withChildren ? "{:block/children ...}" : ""}
+                ${withParents ? "{:block/parents ...}" : ""}
+               ])
+            :where [?page :block/uid "${uid}"]  ]`;
       var results = await window.roamAlphaAPI.q(q);
       if (results.length === 0) {
         return null;
@@ -107,8 +114,8 @@
   async function getBlocksReferringToThisPage(title) {
     try {
       return await window.roamAlphaAPI.q(`
-            [:find (pull ?refs [:block/string :block/uid {:block/children ...}])
-                :where [?refs :block/refs ?title][?title :node/title "${title}"]]`);
+      [:find (pull ?refs [:block/string :block/uid {:block/children ...}])
+          :where [?refs :block/refs ?title][?title :node/title "${title}"]]`);
     } catch (e) {
       return "";
     }
@@ -138,10 +145,10 @@
       "[[(ancestor ?b ?a)[?a :block/children ?b]][(ancestor ?b ?a)[?parent :block/children ?b ](ancestor ?parent ?a) ]]";
 
     var query = `[:find  (pull ?block [:block/uid])
-                                 :in $ ?page_title %
-                                 :where
-                                 [?page :node/title ?page_title]
-                                 (ancestor ?block ?page)]`;
+                           :in $ ?page_title %
+                           :where
+                           [?page :node/title ?page_title]
+                           (ancestor ?block ?page)]`;
 
     var results = await window.roamAlphaAPI.q(query, page_title, rule);
     var random_result = results[Math.floor(Math.random() * results.length)];
@@ -156,6 +163,10 @@
     let inboxName = findBotAttribute("Inbox Name").value;
     let telegramChatId = findBotAttribute("Chat Id").value;
     let randomFromPage = findBotAttribute("Serendipity Page").value;
+    let disabledDatePrefix = findBotAttribute(
+      "Disabled Date Prefix",
+      true
+    ).value;
     let api = `https://api.telegram.org/bot${telegramApiKey}`;
 
     let updateId = null;
@@ -183,13 +194,13 @@
 
     let inboxUid;
     let inboxUids = roamAlphaAPI.q(`[
-      :find (?uid ...)
-      :where
-        [?today :block/uid "${dailyNoteUid}"]
-        [?today :block/children ?block]
-        [?block :block/string "${inboxName}"]
-        [?block :block/uid ?uid]
-    ]`);
+:find (?uid ...)
+:where
+  [?today :block/uid "${dailyNoteUid}"]
+  [?today :block/children ?block]
+  [?block :block/string "${inboxName}"]
+  [?block :block/uid ?uid]
+]`);
 
     if (inboxUids.length) {
       inboxUid = inboxUids[0];
@@ -226,12 +237,12 @@
 
     function findMaxOrder(parent) {
       let orders = roamAlphaAPI.q(`[
-        :find (?order ...)
-        :where
-          [?today :block/uid "${parent}"]
-          [?today :block/children ?block]
-          [?block :block/order ?order]
-      ]`);
+  :find (?order ...)
+  :where
+    [?today :block/uid "${parent}"]
+    [?today :block/children ?block]
+    [?block :block/order ?order]
+]`);
 
       let maxOrder = Math.max(-1, ...orders);
       return maxOrder;
@@ -261,9 +272,9 @@
     function blockExists(uid) {
       return (
         roamAlphaAPI.q(`[
-        :find (?block ...)
-        :where [?block :block/uid "${uid}"]
-      ]`).length > 0
+  :find (?block ...)
+  :where [?block :block/uid "${uid}"]
+]`).length > 0
       );
     }
 
@@ -280,7 +291,8 @@
       }
       const randomBlockContent = await getBlockContentByUID(randomBlockUid);
       /*const lastUsedGraph = localStorage.getItem("lastUsedGraph");
-      const refUrl = `https://roamresearch.com/#/app/${lastUsedGraph}/page/${randomBlockUid}`;*/
+const refUrl = `https://roamresearch.com/#/app/${lastUsedGraph}/page/${randomBlockUid}`;*/
+      // TODO: update to the local roam:// URL Scheme
       const refUrl = `((${randomBlockUid}}))`;
       const text = encodeURIComponent(
         `${randomBlockContent} <a href="${refUrl}">*</a>`
@@ -426,7 +438,8 @@
           }
         }
 
-        const datePrefix = `${hhmm} `;
+        debug("========disabledDatePrefix========", disabledDatePrefix);
+        const datePrefix = disabledDatePrefix === "true" ? "" : `${hhmm} `;
         createNestedBlock(parent, {
           uid,
           order: maxOrder + i,
