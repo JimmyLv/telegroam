@@ -1,3 +1,3 @@
-import telegroam from "./roam";
+import startTelegroam from "./startTelegroam";
 
-telegroam();
+startTelegroam();

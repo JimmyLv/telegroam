@@ -1,6 +1,7 @@
 import { sleep } from "../helpers/sleep";
 import { findBotAttribute } from "../roam/dom/findBotAttribute";
 import { graphName } from "../roam/dom/graphName";
+import { updateFromTelegram } from "../roam/updateFromTelegram";
 
 function hex(buffer) {
   return [...new Uint8Array(buffer)]
@@ -60,7 +61,6 @@ export async function runWithMutualExclusionLock({ waitSeconds, action }) {
   }
 }
 
-// TODO: move back to main function, consider the currentLockPath
 export async function updateFromTelegramContinuously() {
   for (;;) {
     try {

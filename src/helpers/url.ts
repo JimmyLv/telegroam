@@ -13,3 +13,10 @@ export function unlinkify(s) {
     return s;
   }
 }
+
+export function urlWithParams(url, params) {
+  let qs = Object.entries(params)
+    .map(([k, v]) => `${k}=${v}`)
+    .join("&");
+  return `${url}?${qs}`;
+}
