@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/src/telegroam.js", "destination": "/telegroam.js" }
+  ]
+}
