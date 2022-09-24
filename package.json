@@ -21,5 +21,8 @@
     "@parcel/validator-typescript": "^2.7.0",
     "parcel": "^2.7.0",
     "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "@postlight/parser": "^2.2.2"
   }
 }

@@ -1,6 +1,7 @@
 {
   "include": ["src/**/*"],
   "compilerOptions": {
+    "moduleResolution": "Node",
     "isolatedModules": true,
     "lib": ["es2017", "dom"],
     "target": "ES2015",

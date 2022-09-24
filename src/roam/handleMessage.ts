@@ -40,7 +40,7 @@ export async function handleMessage(message, index, { maxOrder, inboxUid }) {
     }
   }
 
-  const textContent = formatTextContent(message, text);
+  const textContent = await formatTextContent(message, text);
 
   createNestedBlock(parent, {
     uid,

@@ -1,8 +1,10 @@
-import { handleLiveLocationUpdate } from '../telegram/handleLiveLocationUpdate'
-import { handlePollCreation } from '../telegram/handlePollCreation'
-import { handleMessage } from './handleMessage'
+import { debug } from "../helpers/log";
+import { handleLiveLocationUpdate } from "../telegram/handleLiveLocationUpdate";
+import { handlePollCreation } from "../telegram/handlePollCreation";
+import { handleMessage } from "./handleMessage";
 
 export async function handleTelegramUpdate(result, i, { maxOrder, inboxUid }) {
+  debug("========msg update result========", result, i, { maxOrder, inboxUid });
   let { message, edited_message, poll } = result;
 
   if (poll) {
@@ -14,7 +16,7 @@ export async function handleTelegramUpdate(result, i, { maxOrder, inboxUid }) {
   }
 
   if (message) {
-    await handleMessage(message, i,{ maxOrder, inboxUid });
+    await handleMessage(message, i, { maxOrder, inboxUid });
   }
 
   i++;

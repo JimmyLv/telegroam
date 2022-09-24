@@ -1,8 +1,9 @@
+import Parser from "@postlight/parser";
 import { formatTime } from "../../helpers/format";
 import { debug } from "../../helpers/log";
 import { findBotAttribute } from "../dom/findBotAttribute";
 
-export function formatTextContent(message, text) {
+export async function formatTextContent(message, text) {
   let disabledDatePrefix = findBotAttribute("Disabled Date Prefix", true).value;
 
   let name = message.from ? message.from.first_name : null;
@@ -17,6 +18,12 @@ export function formatTextContent(message, text) {
   const matched = text.match(urlRE);
   if (matched) {
     console.log("========text contains URL========", matched);
+    const results = await Promise.all(
+      matched.map((url) =>
+        Parser.parse(url).then((result) => `[${result.title}](${result.url})`)
+      )
+    );
+    console.log("========URL title results========", results);
   }
 
   // string: `[[${name}]] at ${hhmm}: ${text}  #telegroam`
