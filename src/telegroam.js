@@ -185,6 +185,7 @@
     }
 
     let updateResponse = await GET(`getUpdates?offset=${updateId}&timeout=60`);
+    console.log("========updateResponse========", updateResponse);
 
     if (!updateResponse.result.length) {
       return;
@@ -302,7 +303,6 @@
     }
 
     async function handleTelegramUpdate(result, i) {
-      debug("========msg update result========", result);
       let { message, edited_message, poll } = result;
 
       if (poll) {
