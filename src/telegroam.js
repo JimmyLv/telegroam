@@ -290,10 +290,9 @@
         randomBlockUid = await getRandomBlockMentioningPage(randomFromPage);
       }
       const randomBlockContent = await getBlockContentByUID(randomBlockUid);
-      /*const lastUsedGraph = localStorage.getItem("lastUsedGraph");
-const refUrl = `https://roamresearch.com/#/app/${lastUsedGraph}/page/${randomBlockUid}`;*/
-      // TODO: update to the local roam:// URL Scheme
-      const refUrl = `((${randomBlockUid}}))`;
+      const lastUsedGraph = localStorage.getItem("lastUsedGraph");
+      const refUrl = `roam://#/app/${lastUsedGraph}/page/${randomBlockUid}`;
+      // const refUrl = `((${randomBlockUid}}))`;
       const text = encodeURIComponent(
         `${randomBlockContent} <a href="${refUrl}">*</a>`
       );
