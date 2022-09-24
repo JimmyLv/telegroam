@@ -193,7 +193,7 @@
 
     if (inboxUids.length) {
       inboxUid = inboxUids[0];
-    } else if (inboxName){
+    } else if (inboxName) {
       inboxUid = roamAlphaAPI.util.generateUID();
 
       // put the inbox at the bottom of the daily note
@@ -281,11 +281,13 @@
       const randomBlockContent = await getBlockContentByUID(randomBlockUid);
       /*const lastUsedGraph = localStorage.getItem("lastUsedGraph");
       const refUrl = `https://roamresearch.com/#/app/${lastUsedGraph}/page/${randomBlockUid}`;*/
-      const refUrl = `((${randomBlockUid}}))`
+      const refUrl = `((${randomBlockUid}}))`;
       const text = encodeURIComponent(
         `${randomBlockContent} <a href="${refUrl}">*</a>`
       );
-      await GET(`sendMessage?chat_id=${telegramChatId}&text=${text}&parse_mode=HTML`);
+      await GET(
+        `sendMessage?chat_id=${telegramChatId}&text=${text}&parse_mode=HTML`
+      );
     }
 
     async function handleTelegramUpdate(result, i) {
@@ -424,11 +426,12 @@
           }
         }
 
+        const datePrefix = `${hhmm} `;
         createNestedBlock(parent, {
           uid,
           order: maxOrder + i,
           // string: `[[${name}]] at ${hhmm}: ${text}  #telegroam`
-          string: `${hhmm} ${text}`,
+          string: `${datePrefix}${text}`,
         });
 
         async function insertFile(fileid, generate) {
