@@ -1,3 +1,6 @@
+import { formatMessage, formatTime } from "./helpers/format";
+import { findBotAttribute } from "./roam/findBotAttribute";
+
 type Block = {
   string?: string;
   uid?: string;
@@ -9,38 +12,8 @@ function telegroam() {
   const { roamAlphaAPI, firebase } = window;
   const lastUsedGraph = localStorage.getItem("lastUsedGraph");
   const isDebug = lastUsedGraph === "Note-Tasking";
+
   const debug = isDebug ? console.debug : () => {};
-
-  function massage(text) {
-    text = text.replace(/\bTODO\b/, "{{[[TODO]]}}");
-    return text;
-  }
-
-  function findBotAttribute(name, isOptional?: boolean) {
-    const BOT_PAGE_NAME = "Telegram Bot";
-
-    let x = roamAlphaAPI.q(`[
-:find (pull ?block [:block/uid :block/string])
-:where
-  [?page :node/title "${BOT_PAGE_NAME}"]
-  [?block :block/page ?page]
-  [?block :block/refs ?ref]
-  [?ref :node/title "${name}"]
-  [?block :block/string ?string]
-]`);
-
-    if (!x.length) {
-      if (isOptional) {
-        return {};
-      }
-      throw new Error(`attribute ${name} missing from [[${BOT_PAGE_NAME}]]`);
-    }
-
-    return {
-      uid: x[0][0].uid,
-      value: x[0][0].string.split("::")[1].trim(),
-    };
-  }
 
   function uidForToday() {
     let today = new Date();
@@ -48,17 +21,6 @@ function telegroam() {
     let mm = (today.getMonth() + 1).toString().padStart(2, "0");
     let dd = today.getDate().toString().padStart(2, "0");
     return `${mm}-${dd}-${yyyy}`;
-  }
-
-  function formatTime(unixSeconds) {
-    let date = new Date(1000 * unixSeconds);
-    let hhmm = date.toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
-    return hhmm;
   }
 
   function stripTrailingSlash(url) {
@@ -93,7 +55,7 @@ function telegroam() {
                 ${withParents ? "{:block/parents ...}" : ""}
                ])
             :where [?page :block/uid "${uid}"]  ]`;
-      var results = await window.roamAlphaAPI.q(q);
+      var results = await roamAlphaAPI.q(q);
       if (results.length === 0) {
         return null;
       }
@@ -104,7 +66,7 @@ function telegroam() {
   }
 
   async function getRandomBlock() {
-    let results = await window.roamAlphaAPI.q(
+    let results = await roamAlphaAPI.q(
       `[:find [(rand 1 ?blocks)] :where [?e :block/uid ?blocks]]`
     );
     return results[0][0];
@@ -112,7 +74,7 @@ function telegroam() {
 
   async function getBlocksReferringToThisPage(title) {
     try {
-      return await window.roamAlphaAPI.q(`
+      return await roamAlphaAPI.q(`
       [:find (pull ?refs [:block/string :block/uid {:block/children ...}])
           :where [?refs :block/refs ?title][?title :node/title "${title}"]]`);
     } catch (e) {
@@ -149,7 +111,7 @@ function telegroam() {
                            [?page :node/title ?page_title]
                            (ancestor ?block ?page)]`;
 
-    var results = await window.roamAlphaAPI.q(query, page_title, rule);
+    var results = await roamAlphaAPI.q(query, page_title, rule);
     var random_result = results[Math.floor(Math.random() * results.length)];
 
     return random_result[0].uid;
@@ -292,7 +254,6 @@ function telegroam() {
         randomBlockUid = await getRandomBlockMentioningPage(randomFromPage);
       }
       const randomBlockContent = await getBlockContentByUID(randomBlockUid);
-      const lastUsedGraph = localStorage.getItem("lastUsedGraph");
       const refUrl = `roam://#/app/${lastUsedGraph}/page/${randomBlockUid}`;
       // const refUrl = `((${randomBlockUid}}))`;
       const text = encodeURIComponent(
@@ -406,7 +367,7 @@ function telegroam() {
       async function handleMessage(message) {
         let name = message.from ? message.from.first_name : null;
         let hhmm = formatTime(message.date);
-        let text = massage(message.text || "");
+        let text = formatMessage(message.text || "");
 
         if (message.location) text = "#Location";
         if (message.voice) text = "#Voice";
