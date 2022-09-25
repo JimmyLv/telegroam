@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 103283932,
+      "message": {
+        "message_id": 3243,
+        "from": {
+          "id": 2107386818,
+          "is_bot": false,
+          "first_name": "JimmyLv",
+          "last_name": "吕立青",
+          "username": "Jimmy_JingLv",
+          "language_code": "zh-hans"
+        },
+        "chat": {
+          "id": 2107386818,
+          "first_name": "JimmyLv",
+          "last_name": "吕立青",
+          "username": "Jimmy_JingLv",
+          "type": "private"
+        },
+        "date": 1664034424,
+        "text": "直接从*单聊*发消息"
+      }
+    }
+  ]
+}

@@ -185,7 +185,6 @@
     }
 
     let updateResponse = await GET(`getUpdates?offset=${updateId}&timeout=60`);
-    console.log("========updateResponse========", updateResponse);
 
     if (!updateResponse.result.length) {
       return;
@@ -303,7 +302,11 @@
     }
 
     async function handleTelegramUpdate(result, i) {
-      let { message, edited_message, poll } = result;
+      let { channel_post, message, edited_message, poll } = result;
+
+      if (channel_post) {
+        handleMessage(channel_post);
+      }
 
       if (poll) {
         handlePollCreation();
@@ -402,8 +405,9 @@
         });
       }
 
-      async function handleMessage() {
-        let name = message.from ? message.from.first_name : null;
+      async function handleMessage(message) {
+        // message.chat.type === channel or private
+        let name = message.from?.first_name || message.sender_chat?.title;
         let hhmm = formatTime(message.date);
         let text = massage(message.text || "");
 
@@ -416,7 +420,7 @@
 
         let uid = `telegram-${message.chat.id}-${message.message_id}`;
 
-        console.log(message);
+        console.log(`${name} sent message: ${message}`);
 
         let parent = inboxUid;
 

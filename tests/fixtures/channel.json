@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 103283931,
+      "channel_post": {
+        "message_id": 11,
+        "sender_chat": {
+          "id": -1001174460679,
+          "title": "telegroam",
+          "username": "tg_roam",
+          "type": "channel"
+        },
+        "chat": {
+          "id": -1001174460679,
+          "title": "telegroam",
+          "username": "tg_roam",
+          "type": "channel"
+        },
+        "date": 1664034407,
+        "text": "直接从*私有频道*发消息3"
+      }
+    }
+  ]
+}
