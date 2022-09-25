@@ -1,4 +1,4 @@
-import Parser from "@postlight/parser";
+// import Parser from "@postlight/parser";
 import { formatTime } from "../../helpers/format";
 import { debug } from "../../helpers/log";
 import { findBotAttribute } from "../dom/findBotAttribute";
@@ -22,10 +22,10 @@ export async function formatTextContent(message, text) {
     console.log("========text contains URL========", matched);
     const results = await Promise.all(
       matched.map((url) =>
-        Parser.parse(url).then((result) => `[${result.title}](${result.url})`)
+        // Parser.parse(url).then((result) => `[${result.title}](${result.url})`)
+        console.log("========URL title result========", url)
       )
     );
-    console.log("========URL title results========", results);
   }
 
   // string: `[[${name}]] at ${hhmm}: ${text}  #telegroam`
