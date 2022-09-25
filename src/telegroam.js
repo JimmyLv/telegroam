@@ -420,7 +420,7 @@
 
         let uid = `telegram-${message.chat.id}-${message.message_id}`;
 
-        console.log(`${name} sent message: ${message}`);
+        console.log(`${name} sent message:`, message);
 
         let parent = inboxUid;
 

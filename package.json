@@ -4,6 +4,7 @@
   "description": "",
   "source": "src/index.ts",
   "main": "dist/main.js",
+  "browser": "dist/browser.js",
   "module": "dist/module.js",
   "types": "dist/types.d.ts",
   "scripts": {

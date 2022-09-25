@@ -18,8 +18,6 @@ export async function handleMessage(message, index, { maxOrder, inboxUid }) {
   const chatId = message.chat.id;
   let uid = `telegram-${chatId}-${message.message_id}`;
 
-  console.log(message);
-
   let parent = inboxUid;
 
   if (message.reply_to_message) {

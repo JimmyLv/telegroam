@@ -5,7 +5,11 @@ import { handleMessage } from "./handleMessage";
 
 export async function handleTelegramUpdate(result, i, { maxOrder, inboxUid }) {
   debug("========msg update result========", result, i, { maxOrder, inboxUid });
-  let { message, edited_message, poll } = result;
+  let { channel_post, message, edited_message, poll } = result;
+
+  if (channel_post) {
+    await handleMessage(channel_post, i, { maxOrder, inboxUid });
+  }
 
   if (poll) {
     handlePollCreation(poll, i, { maxOrder, inboxUid });

@@ -6,8 +6,10 @@ import { findBotAttribute } from "../dom/findBotAttribute";
 export async function formatTextContent(message, text) {
   let disabledDatePrefix = findBotAttribute("Disabled Date Prefix", true).value;
 
-  let name = message.from ? message.from.first_name : null;
+  let name = message.from?.first_name || message.sender_chat?.title;
   let hhmm = formatTime(message.date);
+  console.log(`${name} sent message:`, message);
+
   debug("========disabledDatePrefix========", disabledDatePrefix);
   const datePrefix = disabledDatePrefix === "true" ? "" : `${hhmm} `;
 

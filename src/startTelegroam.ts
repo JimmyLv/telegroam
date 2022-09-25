@@ -1,11 +1,13 @@
 import { updateFromTelegramContinuously } from "./telegram/updateFromTelegramContinuously";
 
 async function startTelegroam() {
+  console.log("========Starting Telegroam========");
   // We need to use the Firebase SDK, which Roam already uses, but
   // Roam uses it via Clojure or whatever, so we import the SDK
   // JavaScript ourselves from their CDN...
   if (document.querySelector("#firebase-script")) {
-    okay();
+    await okay();
+    console.log("========Finished start Telegroam========");
   } else {
     let script = document.createElement("SCRIPT");
     script.id = "firebase-script";
