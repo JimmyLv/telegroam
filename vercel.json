@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    {
+      "source": "/tg/:match*",
+      "destination": "https://api.telegram.org/file/bot/:match*"
+    }
+  ],
   "redirects": [
     { "source": "/src/telegroam.js", "destination": "/telegroam.js" }
   ]
