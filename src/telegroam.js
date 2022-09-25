@@ -294,7 +294,7 @@
       const refUrl = `roam://#/app/${lastUsedGraph}/page/${randomBlockUid}`;
       // const refUrl = `((${randomBlockUid}}))`;
       const text = encodeURIComponent(
-        `${randomBlockContent} <a href="${refUrl}">*</a>`
+        `${randomBlockContent} <a href="${refUrl}">${refUrl}</a>`
       );
       await GET(
         `sendMessage?chat_id=${telegramChatId}&text=${text}&parse_mode=HTML`
