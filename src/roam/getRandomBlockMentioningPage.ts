@@ -1,10 +1,12 @@
 import { getBlocksReferringToThisPage } from "./getBlocksReferringToThisPage";
 
 export async function getRandomBlockMentioningPage(pageTitle) {
+  const pageTitles = pageTitle.split(",");
+  const randomPage = pageTitles[Math.floor(Math.random() * pageTitles.length)];
   const page_title =
-    pageTitle.startsWith("[[") && pageTitle.endsWith("]]")
-      ? pageTitle.slice(2, -2)
-      : pageTitle;
+    randomPage.startsWith("[[") && randomPage.endsWith("]]")
+      ? randomPage.slice(2, -2)
+      : randomPage;
 
   var results = await getBlocksReferringToThisPage(page_title);
   if (results.length === 0) {
