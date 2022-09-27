@@ -26,6 +26,6 @@ export async function sendRandomBlockToTelegram() {
     `${randomBlockContent} [*](${refUrl})`
   );
   await GET(
-    `sendMessage?chat_id=${telegramChatId}&text=${text}&parse_mode=MarkdownV2`
+    `sendMessage?chat_id=${telegramChatId}&text=${text}&parse_mode=Markdown`
   );
 }
