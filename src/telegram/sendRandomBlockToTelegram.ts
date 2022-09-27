@@ -23,9 +23,9 @@ export async function sendRandomBlockToTelegram() {
   const refUrl = `roam://#/app/${lastUsedGraph}/page/${randomBlockUid}`;
   // const refUrl = `((${randomBlockUid}}))`;
   const text = encodeURIComponent(
-    `${randomBlockContent} <a href="${refUrl}">*</a>`
+    `${randomBlockContent} [*](${refUrl})`
   );
   await GET(
-    `sendMessage?chat_id=${telegramChatId}&text=${text}&parse_mode=HTML`
+    `sendMessage?chat_id=${telegramChatId}&text=${text}&parse_mode=MarkdownV2`
   );
 }
