@@ -2,13 +2,15 @@ import { getBlocksReferringToThisPage } from "./getBlocksReferringToThisPage";
 
 export async function getRandomBlockMentioningPage(pageTitle) {
   const pageTitles = pageTitle.split(",");
-  const randomPage = pageTitles[Math.floor(Math.random() * pageTitles.length)];
-  const page_title =
-    randomPage.startsWith("[[") && randomPage.endsWith("]]")
-      ? randomPage.slice(2, -2)
-      : randomPage;
 
-  var results = await getBlocksReferringToThisPage(page_title);
+  const mergedResults = await Promise.all(
+    pageTitles.map(async (t) => {
+      const title = t.startsWith("[[") && t.endsWith("]]") ? t.slice(2, -2) : t;
+      return await getBlocksReferringToThisPage(title);
+    })
+  );
+
+  var results = mergedResults.flat();
   if (results.length === 0) {
     return "";
   }

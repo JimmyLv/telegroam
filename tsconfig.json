@@ -3,7 +3,7 @@
   "compilerOptions": {
     "moduleResolution": "Node",
     "isolatedModules": true,
-    "lib": ["es2017", "dom"],
+    "lib": ["es2019", "dom"],
     "target": "ES2015",
     "typeRoots": ["./node_modules/@types", "./src/types"]
   }
