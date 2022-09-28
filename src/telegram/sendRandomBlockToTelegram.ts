@@ -20,7 +20,9 @@ export async function sendRandomBlockToTelegram() {
     randomBlockUid = await getRandomBlockMentioningPage(randomFromPage);
   }
   const randomBlockContent = await getBlockContentByUID(randomBlockUid);
-  const refUrl = `roam://#/app/${lastUsedGraph}/page/${randomBlockUid}`;
+  // use vercel (redirect) to open roam:// URL scheme
+  // roam://#/app/${lastUsedGraph}/page/${randomBlockUid}
+  const refUrl = `https://telegroam.vercel.app/roam/#/app/${lastUsedGraph}/page/${randomBlockUid}`;
   // const refUrl = `((${randomBlockUid}}))`;
   const text = encodeURIComponent(
     `${randomBlockContent} [*](${refUrl})`
