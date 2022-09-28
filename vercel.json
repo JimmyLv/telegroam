@@ -24,6 +24,6 @@
   ],
   "redirects": [
     { "source": "/src/telegroam.js", "destination": "/telegroam.js" },
-    { "source": "/roam/:match*", "destination": "roam://:match*" }
+    { "source": "/roam", "destination": "roam://" }
   ]
 }
