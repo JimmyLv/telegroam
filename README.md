@@ -17,7 +17,7 @@ When Roam Research receives one message, it automatically returns a previously r
   - {{[[TODO]]}} update the Telegram API key above
 - Chat Id::
 - Serendipity Page:: [[TODO]]
-- Trusted Media Proxy:: https://telegram-cors-proxy.herokuapp.com
+- Trusted Media Proxy:: https://telegroam-cors-proxy.herokuapp.com 
 - Latest Update ID::
 ```
 5. Make a block with the text `{{[[roam/js]]}}`.
@@ -26,7 +26,7 @@ When Roam Research receives one message, it automatically returns a previously r
 var existing = document.getElementById("telegroam");
 if (!existing) {
   var extension = document.createElement("script");
-  extension.src = "https://telegroam.vercel.app/src/telegroam.js";
+  extension.src = "https://telegroam.vercel.app/main.js";
   extension.id = "telegroam";
   extension.async = true;
   extension.type = "text/javascript";

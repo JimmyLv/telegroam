@@ -31,32 +31,35 @@ export async function runWithMutualExclusionLock({ waitSeconds, action }) {
 
   let nonce = window.roamAlphaAPI.util.generateUID();
 
-  let lockPath = `https://binary-semaphore.herokuapp.com/lock/${lockId}/${nonce}`;
+  const lockDomain = `https://roam-binary-semaphore.herokuapp.com`
+  let lockPath = `${lockDomain}/lock/${lockId}/${nonce}`
 
-  let acquirePath = `${lockPath}/acquire`;
-  let releasePath = `${lockPath}/release`;
+  let acquirePath = `${lockPath}`
+  let releasePath = `${lockPath}`
 
   for (;;) {
-    let result = await fetch(acquirePath, { method: "POST" });
+    let result =
+      await fetch(acquirePath, { method: "PUT" })
 
     if (result.status === lockStatus.ok) {
-      currentLockPath = lockPath;
+      currentLockPath = lockPath
 
       try {
-        return await action();
+        return await action()
       } finally {
-        console.log("telegroam: releasing lock");
-        currentLockPath = null;
+        console.log("telegroam: releasing lock")
+        currentLockPath = null
         try {
-          await fetch(releasePath, { method: "POST" });
+          await fetch(releasePath, { method: "DELETE" })
         } catch (e) {
-          console.error(e);
-          throw e;
+          console.error(e)
+          throw e
         }
       }
+
     } else if (result.status === lockStatus.busy) {
-      console.log(`telegroam: lock busy; waiting ${waitSeconds}s`);
-      await sleep(waitSeconds);
+      console.log(`telegroam: lock busy; waiting ${waitSeconds}s`)
+      await sleep(waitSeconds)
     }
   }
 }
