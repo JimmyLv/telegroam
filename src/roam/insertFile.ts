@@ -47,6 +47,9 @@ export async function insertFile(uid, chatId, fileid, generate) {
   if (bibigptUrl && path.includes('.oga')) {
     const res= await fetch(bibigptUrl, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ url, includeDetail: true })
     })
     const result = await res.json()
