@@ -26,7 +26,7 @@ When Roam Research receives one message, it automatically returns a previously r
 var existing = document.getElementById("telegroam");
 if (!existing) {
   var extension = document.createElement("script");
-  extension.src = "https://telegroam.vercel.app/main.js";
+  extension.src = "https://tg.aipkm.com/main.js";
   extension.id = "telegroam";
   extension.async = true;
   extension.type = "text/javascript";
