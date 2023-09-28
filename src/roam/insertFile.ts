@@ -10,6 +10,10 @@ export async function insertFile(uid, chatId, fileid, generate) {
     unlinkify(findBotAttribute("Trusted Media Proxy").value)
   );
 
+  if (!corsProxyUrl) {
+    return
+  }
+
   let photo = await GET(`getFile?chat_id=${chatId}&file_id=${fileid}`);
   let path = photo.result.file_path;
   let url = `https://api.telegram.org/file/bot${telegramApiKey}/${path}`;
