@@ -28,8 +28,8 @@ export async function insertFile(uid, chatId, fileid, generate) {
   });
 
   console.log("fetching", url, "from proxy");
-  const fileUrl = corsProxyUrl.includes('telegroam.vercel.app') ? `https://telegroam.vercel.app/tg/file/bot${telegramApiKey}/${path}` : `${corsProxyUrl}${url}`
-  let blobResponse = await fetch(fileUrl);
+  const proxyFileUrl = corsProxyUrl.includes('telegroam.vercel.app') ? `https://telegroam.vercel.app/tg/file/bot${telegramApiKey}/${path}` : `${corsProxyUrl}${url}`
+  let blobResponse = await fetch(proxyFileUrl);
 
   let blob = await blobResponse.blob();
 
@@ -50,11 +50,11 @@ export async function insertFile(uid, chatId, fileid, generate) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url, includeDetail: true })
+      body: JSON.stringify({ url: proxyFileUrl, includeDetail: true })
     })
     const result = await res.json()
     text = result.summary
-    console.log('========text========', result, text)
+    // console.log('========text========', result, text)
   }
 
   window.roamAlphaAPI.updateBlock({
