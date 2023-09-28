@@ -48,7 +48,8 @@ export async function handleMessage(message, index, { maxOrder, inboxUid }) {
   });
 
   let photo = (url) => `![photo](${url})`;
-  let audio = (url) => `{{[[audio]]:${url}}}`;
+  let audio = (url, text?: string) => `{{[[audio]]:${url}}}${text ? `
+${text}`: ""}`;
   let video = (url) => `:hiccup[:video {:controls true :src "${url}"}]`;
 
   if (message.sticker) {

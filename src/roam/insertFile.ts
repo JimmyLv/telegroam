@@ -6,6 +6,7 @@ import { graphName } from "./dom/graphName";
 
 export async function insertFile(uid, chatId, fileid, generate) {
   let telegramApiKey = findBotAttribute("API Key").value;
+  let bibigptUrl = findBotAttribute("BibiGPT API URL").value;
   let corsProxyUrl = stripTrailingSlash(
     unlinkify(findBotAttribute("Trusted Media Proxy").value)
   );
@@ -14,8 +15,8 @@ export async function insertFile(uid, chatId, fileid, generate) {
     return
   }
 
-  let photo = await GET(`getFile?chat_id=${chatId}&file_id=${fileid}`);
-  let path = photo.result.file_path;
+  let file = await GET(`getFile?chat_id=${chatId}&file_id=${fileid}`);
+  let path = file.result.file_path;
   let url = `https://api.telegram.org/file/bot${telegramApiKey}/${path}`;
 
   let mediauid = createNestedBlock(uid, {
@@ -41,10 +42,21 @@ export async function insertFile(uid, chatId, fileid, generate) {
   let result = await ref.put(blob);
   let firebaseUrl = await ref.getDownloadURL();
 
+  let text = ''
+  // is audio file
+  if (bibigptUrl && path.includes('.oga')) {
+    const res= await fetch(bibigptUrl, {
+      method: 'POST',
+      body: JSON.stringify({ url, includeDetail: true })
+    })
+    const result = await res.json()
+    text = result.summary
+  }
+
   window.roamAlphaAPI.updateBlock({
     block: {
       uid: mediauid,
-      string: generate(firebaseUrl),
+      string: generate(firebaseUrl, text),
     },
   });
 
