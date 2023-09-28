@@ -54,6 +54,7 @@ export async function insertFile(uid, chatId, fileid, generate) {
     })
     const result = await res.json()
     text = result.summary
+    console.log('========text========', result, text)
   }
 
   window.roamAlphaAPI.updateBlock({
