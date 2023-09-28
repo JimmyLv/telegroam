@@ -23,7 +23,7 @@ export async function insertFile(uid, chatId, fileid, generate) {
   });
 
   console.log("fetching", url, "from proxy");
-  let blobResponse = await fetch(`${corsProxyUrl}/${url}`);
+  let blobResponse = await fetch(`${corsProxyUrl}${url}`);
 
   let blob = await blobResponse.blob();
 

@@ -17,7 +17,7 @@ When Roam Research receives one message, it automatically returns a previously r
   - {{[[TODO]]}} update the Telegram API key above
 - Chat Id::
 - Serendipity Page:: [[TODO]]
-- Trusted Media Proxy:: https://telegroam-cors-proxy.herokuapp.com 
+- Trusted Media Proxy:: https://wsrv.nl/?url=
 - Latest Update ID::
 ```
 5. Make a block with the text `{{[[roam/js]]}}`.
