@@ -18,8 +18,8 @@
   ],
   "rewrites": [
     {
-      "source": "/proxy/:match*",
-      "destination": ":match*"
+      "source": "/tg/:match*",
+      "destination": "https://api.telegram.org/:match*"
     }
   ],
   "redirects": [

@@ -27,7 +27,8 @@ export async function insertFile(uid, chatId, fileid, generate) {
   });
 
   console.log("fetching", url, "from proxy");
-  let blobResponse = await fetch(`${corsProxyUrl}${url}`);
+  const fileUrl = corsProxyUrl.includes('telegroam.vercel.app') ? `https://telegroam.vercel.app/tg/file/bot${telegramApiKey}/${path}` : `${corsProxyUrl}${url}`
+  let blobResponse = await fetch(fileUrl);
 
   let blob = await blobResponse.blob();
 
