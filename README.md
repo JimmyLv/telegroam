@@ -17,9 +17,11 @@ When Roam Research receives one message, it automatically returns a previously r
   - {{[[TODO]]}} update the Telegram API key above
 - Chat Id::
 - Serendipity Page:: [[TODO]]
-- Trusted Media Proxy:: https://wsrv.nl/?url=
+- BibiGPT API URL:: https://bibigpt.co/api/open/[apiToken]
+- Trusted Media Proxy:: https://tg.aipkm.com/tg
 - Latest Update ID::
 ```
+How to get your [BibiGPT.co](https://BibiGPT.co) Open API URL? https://aitodo.co/docs/bibigpt-api
 5. Make a block with the text `{{[[roam/js]]}}`.
 6. Add a nested **CHILD** block `/JavaScript Code Block` with this code...
 ```js
