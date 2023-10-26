@@ -11,6 +11,8 @@ export function findBotAttribute(name, isOptional?: boolean) {
   [?block :block/string ?string]
 ]`);
 
+  console.log("========findBotAttribute========", x);
+
   if (!x.length) {
     if (isOptional) {
       return {};
