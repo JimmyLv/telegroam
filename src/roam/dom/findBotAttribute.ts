@@ -11,7 +11,7 @@ export function findBotAttribute(name, isOptional?: boolean) {
   [?block :block/string ?string]
 ]`);
 
-  console.log("========findBotAttribute========", x);
+  // console.log("========findBotAttribute========", x);
 
   if (!x.length) {
     if (isOptional) {
@@ -22,6 +22,7 @@ export function findBotAttribute(name, isOptional?: boolean) {
 
   return {
     uid: x[0][0].uid,
-    value: x[0][0].string.split("::")[1].trim(),
+    // if [[API Key]] without :: exists, and before the attribute
+    value: x[0][0].string.split("::")[1]?.trim(),
   };
 }
